@@ -1,5 +1,6 @@
-import { AuthContext } from "@/contexts/AuthContext";
 import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+import { Button } from "./ui/button";
 
 const Logout = () => {
   const { user, logout } = useContext(AuthContext);
@@ -14,12 +15,7 @@ const Logout = () => {
       {user && (
         <div>
           <p>Logged in as: {user.email}</p>
-          <button
-            className="px-4 py-2 mt-2 text-white bg-red-500 rounded-md hover:bg-red-600"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+          <Button onClick={handleLogout}>Logout</Button>
         </div>
       )}
     </div>

@@ -7,8 +7,8 @@ export const searchMovies = async (query) => {
   try {
     const response = await axios.get(OMDB_API_URL, {
       params: {
-        apikey: API_KEY,
         s: query,
+        apiKey: API_KEY,
       },
     });
     return response.data.Search;
@@ -22,13 +22,13 @@ export const getMovieDetails = async (imdbID) => {
   try {
     const response = await axios.get(OMDB_API_URL, {
       params: {
-        apikey: API_KEY,
         i: imdbID,
+        apiKey: API_KEY,
       },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching movie details:", error);
+    console.error("Error getting movie details:", error);
     return null;
   }
 };
