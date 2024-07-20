@@ -1,27 +1,35 @@
-import { useWatchlist } from "@/contexts/WatchlistContext";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { searchMovies } from "../utils/api";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useSearch } from "../contexts/SearchContext";
 
 const MovieSearch = () => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const { addToWatchlist, removeFromWatchlist, watchlist } = useWatchlist();
+  const { query, setQuery, results, setResults } = useSearch();
+
+  const debounceRef = useRef(null);
 
   const handleSearch = async () => {
     const movies = await searchMovies(query);
     setResults(movies || []);
   };
 
-  const isInWatchlist = (imdbID) => {
-    return watchlist.some((movie) => movie.imdbID === imdbID);
-  };
+  useEffect(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      if (query) {
+        handleSearch();
+      }
+    }, 200);
+  }, [query]);
 
   return (
     <div className="">
-      <div className="container flex p-4 mx-auto mb-4 w-[80%]">
+      <div className="container  flex p-4 mx-auto mb-4 w-[80%]">
         <Input
           type="text"
           placeholder="Enter the movie title"
@@ -41,22 +49,13 @@ const MovieSearch = () => {
               <img
                 src={movie.Poster}
                 alt={movie.Title}
-                className="object-cover w-full h-64"
+                className="object-cover w-full h-auto mb-4"
               />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold">{movie.Title}</h3>
-                <p className="text-sm text-slate-600">{movie.Year}</p>
+              <div className="flex items-center justify-center gap-4 text-center">
+                <h3 className="text-sm font-semibold">{movie.Title}</h3>
+                <p className="text-sm text-slate-600"> ({movie.Year})</p>
               </div>
             </Link>
-            {isInWatchlist(movie.imdbID) ? (
-              <Button onClick={() => removeFromWatchlist(movie.imdbID)}>
-                Remove from Watchlist
-              </Button>
-            ) : (
-              <Button onClick={() => addToWatchlist(movie)}>
-                Add to Watchlist
-              </Button>
-            )}
           </div>
         ))}
       </div>

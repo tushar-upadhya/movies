@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,6 +22,9 @@ const Login = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <Button onClick={handleLogin}>Login</Button>
+      <Link to={"/"}>
+        <Button>Back</Button>
+      </Link>
     </div>
   );
 };

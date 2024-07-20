@@ -1,10 +1,23 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getMovieDetails } from "../utils/api";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useWatchlist } from "@/contexts/WatchlistContext";
+import MovieDetails from "@/components/MovieDetails";
+import { Progress } from "@/components/ui/progress";
 
 const MovieDetailsPage = () => {
   const { imdbID } = useParams();
   const [movie, setMovie] = useState(null);
+
+  const { addToWatchlist, removeFromWatchlist, watchlist } = useWatchlist();
+  const handleAddToWatchlist = () => {
+    addToWatchlist(movie);
+  };
+
+  const isInWatchlist = (imdbID) => {
+    return watchlist.some((movie) => movie.imdbID === imdbID);
+  };
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -16,55 +29,25 @@ const MovieDetailsPage = () => {
   }, [imdbID]);
 
   if (!movie) {
-    return <div>Loading...</div>;
+    return <Progress value={33} />;
   }
 
   return (
-    <div className="container p-4 mx-auto bg-white rounded-lg shadow-md">
-      <h2 className="mb-4 text-2xl font-semibold">
-        {movie.Title} ({movie.Year})
-      </h2>
-      <div className="flex flex-col md:flex-row">
-        <img
-          src={movie.Poster}
-          alt={movie.Title}
-          className="w-full max-w-xs mb-4 md:w-1/3 md:mb-0 md:mr-4"
-        />
-        <div className="md:flex-1">
-          <p>
-            <strong>Genre:</strong> {movie.Genre}
-          </p>
-          <p>
-            <strong>Director:</strong> {movie.Director}
-          </p>
-          <p>
-            <strong>Actors:</strong> {movie.Actors}
-          </p>
-          <p>
-            <strong>Plot:</strong> {movie.Plot}
-          </p>
-          <p>
-            <strong>Language:</strong> {movie.Language}
-          </p>
-          <p>
-            <strong>Country:</strong> {movie.Country}
-          </p>
-          <p>
-            <strong>Runtime:</strong> {movie.Runtime}
-          </p>
-          <p>
-            <strong>Released:</strong> {movie.Released}
-          </p>
-          <p>
-            <strong>Box Office:</strong> {movie.BoxOffice}
-          </p>
-          <p>
-            <strong>IMDB Rating:</strong> {movie.imdbRating}
-          </p>
-          <p>
-            <strong>IMDB Votes:</strong> {movie.imdbVotes}
-          </p>
-        </div>
+    <div className="container p-4 mx-auto rounded-lg shadow-md">
+      <MovieDetails movie={movie} />
+      <div className="p-4">
+        {isInWatchlist(movie.imdbID) ? (
+          <Button onClick={() => removeFromWatchlist(movie.imdbID)}>
+            Remove from Watchlist
+          </Button>
+        ) : (
+          <Button onClick={() => addToWatchlist(movie)}>
+            Add to Watchlist
+          </Button>
+        )}
+        <Link to={"/"}>
+          <Button>Back</Button>
+        </Link>
       </div>
     </div>
   );

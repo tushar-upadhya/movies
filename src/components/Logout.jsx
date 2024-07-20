@@ -10,7 +10,7 @@ const Logout = () => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="shadow-md p-4rounded-lg">
       <h2 className="mb-4 text-lg font-semibold">Logout</h2>
       {user && (
         <div>

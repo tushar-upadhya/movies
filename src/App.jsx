@@ -1,15 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import Watchlist from "./pages/Watchlist";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import MovieDetailsPage from "./pages/MovieDetailsPage";
-import Watchlist from "./components/Watchlist";
-import Navbar from "./components/Navbar";
-import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />

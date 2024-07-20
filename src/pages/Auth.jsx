@@ -1,4 +1,3 @@
-// src/pages/Auth.js
 import { useContext, useEffect } from "react";
 import Login from "../components/Login";
 import { AuthContext } from "../contexts/AuthContext";
@@ -17,7 +16,7 @@ const Auth = () => {
   }, [user, navigate, from]);
 
   return (
-    <div className="p-4">
+    <div className="h-auto ">
       <Login />
     </div>
   );
