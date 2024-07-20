@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
 import { useWatchlist } from "@/contexts/WatchlistContext";
-import { Button } from "../components/ui/button";
+import { Menu } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "../components/Login";
-import WatchCard from "../components/WatchCard";
 import Sidebar from "../components/Sidebar";
-import { Menu } from "lucide-react";
+import { Button } from "../components/ui/button";
+import WatchCard from "../components/WatchCard";
 
 const Watchlist = () => {
   const { user } = useContext(AuthContext);
