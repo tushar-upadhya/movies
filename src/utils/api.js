@@ -11,9 +11,18 @@ export const searchMovies = async (query) => {
         apiKey: API_KEY,
       },
     });
-    return response.data.Search;
+
+    if (response.data.Response === "True") {
+      return response.data.Search;
+    } else {
+      console.error("No movies found:", response.data.Error);
+      return [];
+    }
   } catch (error) {
-    console.error("Error searching movies:", error);
+    console.error(
+      "Error searching movies:",
+      error.response ? error.response.data : error.message
+    );
     return [];
   }
 };
@@ -26,9 +35,18 @@ export const getMovieDetails = async (imdbID) => {
         apiKey: API_KEY,
       },
     });
-    return response.data;
+
+    if (response.data.Response === "True") {
+      return response.data;
+    } else {
+      console.error("Error getting movie details:", response.data.Error);
+      return null;
+    }
   } catch (error) {
-    console.error("Error getting movie details:", error);
+    console.error(
+      "Error getting movie details:",
+      error.response ? error.response.data : error.message
+    );
     return null;
   }
 };
